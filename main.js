@@ -76,7 +76,7 @@ class Game {
     }
   }
   initPlayer2() {
-    const image = document.getElementById(this.gameUI.player1character.value);
+    const image = document.getElementById(this.gameUI.player2character.value);
     const name = this.gameUI.player2name.value;
     if (this.gameUI.player2controls.value === "wsad") {
       this.player2 = new Keyboard2(
@@ -103,7 +103,7 @@ class Game {
     }
   }
   initPlayer3() {
-    const image = document.getElementById(this.gameUI.player1character.value);
+    const image = document.getElementById(this.gameUI.player3character.value);
     const name = this.gameUI.player3name.value;
     this.player3 = new ComputerAi(
       this,
@@ -117,7 +117,7 @@ class Game {
     );
   }
   initPlayer4() {
-    const image = document.getElementById(this.gameUI.player1character.value);
+    const image = document.getElementById(this.gameUI.player4character.value);
     const name = this.gameUI.player4name.value;
     this.player4 = new ComputerAi(
       this,

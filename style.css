@@ -30,7 +30,7 @@ body {
   translate: -50% 0;
   padding: 10px;
   background: rgba(0, 0, 0, 0.6);
-  font: 15px Consolas;
+  font: 20px Consolas;
 }
 
 #buttons {
@@ -69,6 +69,14 @@ body {
 #gameMenu {
   display: block;
   padding-top: 10px;
+}
+
+#playerChoice {
+  padding: 20px 0;
+}
+
+#playerChoice > div {
+  padding: 10px 5px;
 }
 
 #gameOverScreen {
