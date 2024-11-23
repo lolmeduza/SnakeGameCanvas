@@ -29,7 +29,7 @@ body {
   left: 50%;
   translate: -50% 0;
   padding: 10px;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0.6);
   font: 15px Consolas;
 }
 
@@ -46,6 +46,8 @@ body {
   background-color: black;
   color: rgb(0, 238, 255);
   font: 16px Consolas;
+  border: 1px solid white;
+  margin: 0 auto;
 }
 
 #scoreScreen {
@@ -66,6 +68,7 @@ body {
 
 #gameMenu {
   display: block;
+  padding-top: 10px;
 }
 
 #gameOverScreen {
@@ -75,4 +78,14 @@ body {
   height: 100%;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+#message1 {
+  font-size: 30px;
+  text-align: center;
+}
+#message2 {
+  /* margin-top: 5px; */
+  font-size: 25px;
+  text-align: center;
 }

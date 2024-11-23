@@ -14,6 +14,7 @@ class Game {
     this.eventUpdate = false;
 
     this.gameOver = true;
+    //scores
     this.winningScore = 20;
 
     this.player1;
@@ -33,7 +34,7 @@ class Game {
       this.resize(e.currentTarget.innerWidth, e.currentTarget.innerHeight);
     });
     this.resize(window.innerWidth, window.innerHeight);
-    this.start();
+    // this.start();
   }
   resize(width, height) {
     this.canvas.width = width - (width % this.cellSize);
@@ -48,6 +49,7 @@ class Game {
     this.background = new Background(this);
   }
   initPlayer1() {
+    const image = document.getElementById(this.gameUI.player1character.value);
     const name = this.gameUI.player1name.value;
     if (this.gameUI.player1controls.value === "arrows") {
       this.player1 = new Keyboard1(
@@ -57,7 +59,8 @@ class Game {
         1,
         0,
         "orangered",
-        name
+        name,
+        image
       );
     } else {
       this.player1 = new ComputerAi(
@@ -67,11 +70,13 @@ class Game {
         1,
         0,
         "orangered",
-        name
+        name,
+        image
       );
     }
   }
   initPlayer2() {
+    const image = document.getElementById(this.gameUI.player1character.value);
     const name = this.gameUI.player2name.value;
     if (this.gameUI.player2controls.value === "wsad") {
       this.player2 = new Keyboard2(
@@ -81,7 +86,8 @@ class Game {
         1,
         0,
         "magenta",
-        name
+        name,
+        image
       );
     } else {
       this.player2 = new ComputerAi(
@@ -91,11 +97,13 @@ class Game {
         1,
         0,
         "magenta",
-        name
+        name,
+        image
       );
     }
   }
   initPlayer3() {
+    const image = document.getElementById(this.gameUI.player1character.value);
     const name = this.gameUI.player3name.value;
     this.player3 = new ComputerAi(
       this,
@@ -104,10 +112,12 @@ class Game {
       -1,
       0,
       "yellow",
-      name
+      name,
+      image
     );
   }
   initPlayer4() {
+    const image = document.getElementById(this.gameUI.player1character.value);
     const name = this.gameUI.player4name.value;
     this.player4 = new ComputerAi(
       this,
@@ -116,7 +126,8 @@ class Game {
       0,
       -1,
       "darkblue",
-      name
+      name,
+      image
     );
   }
   start() {

@@ -1,5 +1,5 @@
 class Snake {
-  constructor(game, x, y, speedX, speedY, color, name) {
+  constructor(game, x, y, speedX, speedY, color, name, image) {
     this.game = game;
     this.x = x;
     this.y = y;
@@ -13,13 +13,16 @@ class Snake {
     this.length = 3;
     this.segments = [];
     for (let i = 0; i < this.length; i++) {
-      this.x += this.speedX;
-      this.y += this.speedY;
+      if (i > 0) {
+        this.x += this.speedX;
+        this.y += this.speedY;
+      }
+
       this.segments.unshift({ x: this.x, y: this.y, frameX: 0, frameY: 0 });
     }
     this.readyToTurn = true;
     this.name = name;
-    this.image = document.getElementById("snake_corgi");
+    this.image = image;
     this.spriteWidth = 200;
     this.spriteHeight = 200;
   }
@@ -27,9 +30,19 @@ class Snake {
     this.readyToTurn = true;
     //collisions
     if (this.game.checkCollision(this, this.game.food)) {
+      if (this.game.food.frameY === 1) {
+        //not edibele
+        this.score--;
+        if (this.length > 2) {
+          this.length--;
+          if (this.segments.length > this.length) this.segments.pop();
+        }
+      } else {
+        //reg food
+        this.score++;
+        this.length++;
+      }
       this.game.food.reset();
-      this.score++;
-      this.length++;
     }
     // boundaries
     if (
@@ -51,7 +64,7 @@ class Snake {
     }
     //win condition
     if (this.score >= this.game.winningScore) {
-      this.game.gameUI.triggerGameOver();
+      this.game.gameUI.triggerGameOver(this);
     }
   }
   draw() {
@@ -128,20 +141,52 @@ class Snake {
       //head
       if (segment.y < nextSegment.y) {
         //up
-        segment.frameX = 1;
-        segment.frameY = 2;
+        if (
+          this.game.food.y === segment.y - 1 &&
+          this.game.food.x === segment.x
+        ) {
+          segment.frameX = 7;
+          segment.frameY = 1;
+        } else {
+          segment.frameX = 1;
+          segment.frameY = 2;
+        }
       } else if (segment.y > nextSegment.y) {
         //down
-        segment.frameX = 0;
-        segment.frameY = 4;
+        if (
+          this.game.food.y === segment.y + 1 &&
+          this.game.food.x === segment.x
+        ) {
+          segment.frameX = 7;
+          segment.frameY = 3;
+        } else {
+          segment.frameX = 0;
+          segment.frameY = 4;
+        }
       } else if (segment.x < nextSegment.x) {
         //left
-        segment.frameX = 0;
-        segment.frameY = 0;
+        if (
+          this.game.food.x === segment.x - 1 &&
+          this.game.food.y === segment.y
+        ) {
+          segment.frameX = 2;
+          segment.frameY = 4;
+        } else {
+          segment.frameX = 4;
+          segment.frameY = 2;
+        }
       } else if (segment.x > nextSegment.x) {
         //right
-        segment.frameX = 2;
-        segment.frameY = 1;
+        if (
+          this.game.food.x === segment.x + 1 &&
+          this.game.food.y === segment.y
+        ) {
+          segment.frameX = 4;
+          segment.frameY = 4;
+        } else {
+          segment.frameX = 6;
+          segment.frameY = 3;
+        }
       }
     } else if (index === this.segments.length - 1) {
       //tail
@@ -207,8 +252,8 @@ class Snake {
   }
 }
 class Keyboard1 extends Snake {
-  constructor(game, x, y, speedX, speedY, color, name) {
-    super(game, x, y, speedX, speedY, color, name);
+  constructor(game, x, y, speedX, speedY, color, name, image) {
+    super(game, x, y, speedX, speedY, color, name, image);
 
     window.addEventListener("keydown", (e) => {
       if (e.key === "ArrowUp") this.turnUp();
@@ -220,8 +265,8 @@ class Keyboard1 extends Snake {
 }
 
 class Keyboard2 extends Snake {
-  constructor(game, x, y, speedX, speedY, color, name) {
-    super(game, x, y, speedX, speedY, color, name);
+  constructor(game, x, y, speedX, speedY, color, name, image) {
+    super(game, x, y, speedX, speedY, color, name, image);
 
     window.addEventListener("keydown", (e) => {
       if (e.key.toLowerCase() === "w") this.turnUp();
@@ -233,26 +278,34 @@ class Keyboard2 extends Snake {
 }
 
 class ComputerAi extends Snake {
-  constructor(game, x, y, speedX, speedY, color, name) {
-    super(game, x, y, speedX, speedY, color, name);
+  constructor(game, x, y, speedX, speedY, color, name, image) {
+    super(game, x, y, speedX, speedY, color, name, image);
     this.turnTimer = 0;
     this.turnInterval;
   }
   update() {
     super.update();
-    if (this.turnTimer < this.turnInterval) {
-      this.turnTimer += 1;
-    } else {
-      this.turnTimer = 0;
+    if (
+      (this.x === this.game.food.x && this.spedY === 0) ||
+      (this.y === this.game.food.y && this.speedX === 0)
+    ) {
       this.turn();
-      this.turnInterval = Math.floor(Math.random() * 8) + 1;
+    } else {
+      if (this.turnTimer < this.turnInterval) {
+        this.turnTimer += 1;
+      } else {
+        this.turn();
+        this.turnInterval = Math.floor(Math.random() * 8) + 5;
+      }
     }
   }
+
   turn() {
+    this.turnTimer = 0;
     if (this.speedY === 0) {
-      Math.random() < 0.5 ? this.turnUp() : this.turnDown();
+      this.game.food.y < this.y ? this.turnUp() : this.turnDown();
     } else if (this.speedX === 0) {
-      Math.random() < 0.5 ? this.turnLeft() : this.turnRight();
+      this.game.food.x < this.x ? this.turnLeft() : this.turnRight();
     }
   }
 }

@@ -32,6 +32,12 @@ class UI {
     this.player2name = document.getElementById("player2name");
     this.player3name = document.getElementById("player3name");
     this.player4name = document.getElementById("player4name");
+    //characters
+    this.player1character = document.getElementById("player1character");
+
+    //messages
+    this.message1 = document.getElementById("message1");
+    this.message2 = document.getElementById("message2");
   }
   update() {
     this.scoreBoard1.innerText =
@@ -43,9 +49,16 @@ class UI {
     this.scoreBoard4.innerText =
       this.game.player4.name + ": " + this.game.player4.score;
   }
-  triggerGameOver() {
+  triggerGameOver(winner) {
     this.game.gameOver = true;
     this.gameOverUI();
+    if (winner) {
+      this.message1.innerText = winner.name + " wins!";
+      this.message2.innerText = "Winning score " + winner.score;
+    } else {
+      this.message1.innerText = "Welcome to the Corgi Arena!";
+      this.message2.innerText = "Choose your fighters!";
+    }
   }
   gameplayUI() {
     this.gameMenu.style.display = "none";
