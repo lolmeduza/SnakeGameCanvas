@@ -62,6 +62,17 @@ class Game {
         name,
         image
       );
+    } else if (this.gameUI.player1controls.value === "Phone") {
+      this.player1 = new Touchscreen(
+        this,
+        0,
+        this.topMargin,
+        1,
+        0,
+        "orangered",
+        name,
+        image
+      );
     } else {
       this.player1 = new ComputerAi(
         this,

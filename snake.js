@@ -263,6 +263,55 @@ class Keyboard1 extends Snake {
     });
   }
 }
+class Touchscreen extends Snake {
+  constructor(game, x, y, speedX, speedY, color, name, image) {
+    super(game, x, y, speedX, speedY, color, name, image);
+
+    // Координаты начала касания
+    this.startX = 0;
+    this.startY = 0;
+
+    // Порог для распознавания свайпа
+    this.swipeThreshold = 50;
+
+    // Добавляем обработчики событий для свайпа
+    window.addEventListener("touchstart", this.handleTouchStart.bind(this));
+    window.addEventListener("touchend", this.handleTouchEnd.bind(this));
+  }
+
+  handleTouchStart(e) {
+    const touch = e.touches[0]; // Получаем первую точку касания
+    this.startX = touch.clientX;
+    this.startY = touch.clientY;
+  }
+
+  handleTouchEnd(e) {
+    const touch = e.changedTouches[0]; // Получаем точку завершения свайпа
+    const endX = touch.clientX;
+    const endY = touch.clientY;
+
+    // Рассчитываем сдвиг
+    const deltaX = endX - this.startX;
+    const deltaY = endY - this.startY;
+
+    // Определяем направление свайпа
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      // Горизонтальный свайп
+      if (deltaX > this.swipeThreshold) {
+        this.turnRight(); // Свайп вправо
+      } else if (deltaX < -this.swipeThreshold) {
+        this.turnLeft(); // Свайп влево
+      }
+    } else {
+      // Вертикальный свайп
+      if (deltaY > this.swipeThreshold) {
+        this.turnDown(); // Свайп вниз
+      } else if (deltaY < -this.swipeThreshold) {
+        this.turnUp(); // Свайп вверх
+      }
+    }
+  }
+}
 
 class Keyboard2 extends Snake {
   constructor(game, x, y, speedX, speedY, color, name, image) {
