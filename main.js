@@ -180,18 +180,19 @@ class Game {
   }
   toggleFullScreen() {
     if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-      const element = document.documentElement;
+      // Для всех браузеров, кроме Safari
       if (element.requestFullscreen) {
         element.requestFullscreen();
-      } else if (element.webkitRequestFullscreen) {
-        // Для iOS
+      }
+      // Для Safari на iOS
+      else if (element.webkitRequestFullscreen) {
         element.webkitRequestFullscreen();
       }
     } else {
+      // Выход из полноэкранного режима
       if (document.exitFullscreen) {
         document.exitFullscreen();
       } else if (document.webkitExitFullscreen) {
-        // Для iOS
         document.webkitExitFullscreen();
       }
     }
