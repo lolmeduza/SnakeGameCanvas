@@ -179,22 +179,10 @@ class Game {
     return a.x === b.x && a.y === b.y;
   }
   toggleFullScreen() {
-    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-      // Для всех браузеров, кроме Safari
-      if (element.requestFullscreen) {
-        element.requestFullscreen();
-      }
-      // Для Safari на iOS
-      else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-      }
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
     } else {
-      // Выход из полноэкранного режима
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      }
+      document.exitFullscreen();
     }
   }
 
