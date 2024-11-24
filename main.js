@@ -221,7 +221,7 @@ window.addEventListener("load", function () {
 
   let lastTime = 0;
   function animate(timeStamp) {
-    const deltaTime = timeStamp - lastTime;
+    const deltaTime = timeStamp - lastTime + 2;
     lastTime = timeStamp;
     game.render(deltaTime);
     requestAnimationFrame(animate);
