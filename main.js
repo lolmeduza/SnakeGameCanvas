@@ -179,10 +179,21 @@ class Game {
     return a.x === b.x && a.y === b.y;
   }
   toggleFullScreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      const element = document.documentElement;
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.webkitRequestFullscreen) {
+        // Для iOS
+        element.webkitRequestFullscreen();
+      }
     } else {
-      document.exitFullscreen();
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        // Для iOS
+        document.webkitExitFullscreen();
+      }
     }
   }
 
